@@ -31,7 +31,7 @@
         </label>
       </div>
       <div class="form-group" v-if="isDineIn">
-        <label>Ofitsant hizmati</label>
+        <label>Ofitsant hizmati (%)</label>
         <input v-model.number="serviceFeeTotal" type="number" placeholder="Ofitsant hizmati" />
       </div>
       <button type="submit">Hisoblash</button>
@@ -82,13 +82,19 @@ export default {
     const calculateOrder = () => {
       const numOrders = newOrders.value.length;
       const deliveryPerPerson = deliveryPrice.value / numOrders;
-      const serviceFeePerPerson = serviceFeeTotal.value / numOrders;
+      const serviceFeePercentage = serviceFeeTotal.value / 100; // Ofitsant hizmatini foizga aylantiramiz
+      const ordersWithTotal = [];
 
-      orders.value = newOrders.value.map(order => {
-        const newOrder = { ...order, isDineIn: isDineIn.value };
-        newOrder.total = (newOrder.price || 0) + (deliveryPerPerson || 0) + (serviceFeePerPerson || 0);
-        return newOrder;
+      // Har bir buyurtma uchun umumiy narxni hisoblaymiz
+      newOrders.value.forEach(order => {
+        const totalBeforeServiceFee = (order.price || 0) + (deliveryPerPerson || 0);
+        const serviceFeePerOrder = totalBeforeServiceFee * serviceFeePercentage;
+        const total = totalBeforeServiceFee + serviceFeePerOrder;
+        ordersWithTotal.push({ ...order, total });
       });
+
+      // Hisoblangan umumiy narxlarni buyurtmalarga tayinlaymiz
+      orders.value = ordersWithTotal;
     };
 
     const addNewOrderField = () => {
@@ -120,7 +126,6 @@ export default {
       return result.trim(); // oxirgi qator bo'sh joyini olib tashlash uchun
     });
 
-
     return {
       orders,
       newOrders,
@@ -137,6 +142,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style>
