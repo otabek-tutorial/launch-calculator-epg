@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
+    "axios": "^1.7.2",
     "qrcode": "^1.5.3",
     "qrcode.vue": "^3.4.1",
     "quagga": "^0.12.1",
     "vue": "^3.4.21",
+    "vue-axios": "^3.5.2",
     "vue-qrcode": "^2.2.2",
     "vue-router": "^4.3.0"
   },
