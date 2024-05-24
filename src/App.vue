@@ -133,7 +133,10 @@ export default {
           text: message,
           parse_mode: 'Markdown'
         });
+        console.log('Message sent:', response.data);
       } catch (error) {
+        console.error('Error sending message to Telegram:', error);
+        console.error('Error details:', error.response ? error.response.data : error.message);
       }
     };
 
@@ -189,7 +192,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 .container {
